@@ -2,6 +2,8 @@ require "rubygems"
 require "yaml"
 require "fileutils"
 require "optparse"
+require "active_support"
+require "active_support/inflector"
 
 class Rpack
    def initialize
@@ -12,12 +14,11 @@ class Rpack
          puts @options_parser
          exit
       end
-
-      @config  = YAML.load(File.open(File.dirname(__FILE__)+"/../config/config.yml"))
-      @list    = filelist
-      p @pattern
-      p @config
-      p @options
+      load_inflections
+      @singular   = @pattern.singularize
+      @plural     = @singular.pluralize
+      @config     = YAML.load(File.open(File.dirname(__FILE__)+"/../config/config.yml"))
+      @list       = filelist
    end
 
    def parse_options 
@@ -53,6 +54,14 @@ class Rpack
       [parser,options]
    end
 
+   def load_inflections
+      file = "./config/initializers/inflections.rb"
+      require file if File.exist?(file)
+   end
+
    def filelist
+      puts "packing #{@plural} ..."
+      for option in @options
+      end
    end
 end
