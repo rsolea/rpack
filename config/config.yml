@@ -1,38 +1,57 @@
 controllers:
+   plural: true
    paths: 
    - ./app/controllers/
+
 models:
    paths: 
    - ./app/models/
+
 views:
+   plural: true
+   dir: true
    paths: 
    - ./app/views/
+
 helpers:
+   plural: true
    paths: 
    - ./app/helpers/
+
 mailers:
    paths: 
    - ./app/mailers/
+
 migrations:
+   plural: true
    paths: 
    - ./db/migrate/
+
 unit:   
    paths: 
    - ./test/unit/
    - ./test/unit/helpers/
+
 functional:
+   plural: true
    paths:
    - ./test/functional/
+
 integration:
    paths:
    - ./test/integration/
+
 performance:
    paths:
    - ./test/performance/
+
 fixtures:
+   plural: true
    paths:
    - ./test/fixtures/
+
 routes:
+   plural: true
    paths:
    - ./config/routes.rb
    extract: true
