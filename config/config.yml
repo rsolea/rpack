@@ -1,9 +1,11 @@
 controller:
    plural: true
+   suffix: _controller.rb
    paths: 
    - /app/controllers/
 
 model:
+   suffix: .rb
    paths: 
    - /app/models/
 
@@ -15,6 +17,7 @@ view:
 
 helper:
    plural: true
+   suffix: _helper.rb
    paths: 
    - /app/helpers/
 
@@ -24,16 +27,19 @@ mailer:
 
 migration:
    plural: true
+   check_filename: true
    paths: 
    - /db/migrate/
 
 unit:   
+   suffix: "*_test.rb"
    paths: 
    - /test/unit/
    - /test/unit/helpers/
 
 functional:
    plural: true
+   suffix: _controller_test.rb
    paths:
    - /test/functional/
 
@@ -47,6 +53,7 @@ performance:
 
 fixture:
    plural: true
+   suffix: .yml
    paths:
    - /test/fixtures/
 
