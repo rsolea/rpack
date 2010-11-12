@@ -10,9 +10,9 @@ module Rpack
          # check for pattern and options
          @pattern = pattern
          @options_parser, @options = parser.parser, parser.options
+         exit if @options_parser.nil?
          if @pattern.nil? || @pattern.size<1
-            puts "No name given"
-            puts @options_parser
+            puts "No name given #{@options_parser}"
             exit
          end
 
