@@ -1,7 +1,7 @@
 require "test/unit"
 require File.dirname(__FILE__)+"/../lib/parser.rb"
 
-class Parser < Test::Unit::TestCase
+class ParserTest < Test::Unit::TestCase
    def test_error
       @parser = Rpack::Parser.new(%w(-t))
       assert_nil @parser.options

@@ -6,7 +6,9 @@ require "active_support/inflector"
 
 module Rpack
    class Rpack
-      def initialize(pattern,parser)
+      attr_reader :plural, :singular, :config
+
+      def initialize(pattern,parser,inflections=nil)
          # check for pattern and options
          @pattern = pattern
          @options_parser, @options = parser.parser, parser.options
@@ -17,7 +19,7 @@ module Rpack
          end
 
          # plural and singular forms
-         load_inflections
+         load_inflections(inflections)
          @singular   = @pattern.singularize
          @plural     = @singular.pluralize
 
@@ -26,13 +28,12 @@ module Rpack
          @list       = filelist
       end
 
-      def load_inflections
-         file = "./config/initializers/inflections.rb"
-         require file if File.exist?(file)
+      def load_inflections(file=nil)
+         file = "./config/initializers/inflections.rb" if file.nil?
+         require file if !file.nil? && File.exist?(file)
       end
 
       def filelist
-         puts "packing #{@plural} ..."
          for option in @options
          end
       end
