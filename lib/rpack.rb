@@ -49,6 +49,8 @@ module Rpack
                key      = configs["plural"] ? @plural : @singular
                suffix   = configs["suffix"]
                file     = File.absolute_path("#{@basedir}#{path}#{key}#{suffix}")
+
+               next if !File.exist?(file)
                list[option] << file
             end
          end
