@@ -1,28 +1,28 @@
-controllers:
+controller:
    plural: true
    paths: 
    - ./app/controllers/
 
-models:
+model:
    paths: 
    - ./app/models/
 
-views:
+view:
    plural: true
    dir: true
    paths: 
    - ./app/views/
 
-helpers:
+helper:
    plural: true
    paths: 
    - ./app/helpers/
 
-mailers:
+mailer:
    paths: 
    - ./app/mailers/
 
-migrations:
+migration:
    plural: true
    paths: 
    - ./db/migrate/
@@ -45,12 +45,12 @@ performance:
    paths:
    - ./test/performance/
 
-fixtures:
+fixture:
    plural: true
    paths:
    - ./test/fixtures/
 
-routes:
+route:
    plural: true
    paths:
    - ./config/routes.rb

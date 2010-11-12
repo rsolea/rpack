@@ -18,4 +18,5 @@ Gem::Specification.new do |s|
    s.summary = %q{Simple Rails packager}
  
    s.add_dependency("rubyzip", [">= 0"])
+   s.add_dependency("activesupport", [">= 2.3.10"])
 end
