@@ -1,0 +1,37 @@
+controllers:
+   path: ./app/controllers/
+models:
+   paths: 
+   - ./app/models/
+views:
+   paths: 
+   - ./app/views/
+helpers:
+   paths: 
+   - ./app/helpers/
+mailers:
+   paths: 
+   - ./app/mailers/
+migrations:
+   paths: 
+   - ./db/migrate/
+unit:   
+   paths: 
+   - ./test/unit/
+   - ./test/unit/helpers/
+functional:
+   paths:
+   - ./test/functional/
+integration:
+   paths:
+   - ./test/integration/
+performance:
+   paths:
+   - ./test/performance/
+fixtures:
+   paths:
+   - ./test/fixtures/
+routes:
+   paths:
+   - ./config/routes.rb
+   extract: true
