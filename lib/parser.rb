@@ -2,7 +2,7 @@ require "optparse"
 
 module Rpack
    class Parser
-      attr_accessor  :parser, :options
+      attr_accessor  :parser, :options, :basedir
       attr_reader    :full_options
       def initialize(argv)
          @options = []
@@ -12,6 +12,10 @@ module Rpack
          begin
             OptionParser.new do |opts|
                @parser = opts
+               class << @parser
+                  attr_accessor :basedir
+               end
+
                opts.banner = "Usage: rpack <name> [options]"
                opts.on("-a","--all")         { @options = @full_options  }
                opts.on("-c","--controller")  { @options << "controller" }
@@ -26,6 +30,9 @@ module Rpack
                opts.on("-p","--performance") { @options << "performance"}
                opts.on("-x","--fixture")     { @options << "fixture"    }
                opts.on("-r","--route")       { @options << "route"      }
+               opts.on("-d","--dir DIR") do |dir|
+                  @parser.basedir = dir.strip
+               end
             end.parse! argv
             @options = @full_options if @options.size<1
          rescue => e

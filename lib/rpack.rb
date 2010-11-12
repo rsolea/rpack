@@ -8,15 +8,17 @@ module Rpack
    class Rpack
       attr_reader :plural, :singular, :config
 
-      def initialize(pattern,parser,inflections=nil)
+      def initialize(pattern,parser,basedir=".",inflections=nil)
          # check for pattern and options
          @pattern = pattern
          @options_parser, @options = parser.parser, parser.options
+         @basedir = @options_parser.basedir || basedir
          exit if @options_parser.nil?
          if @pattern.nil? || @pattern.size<1
             puts "No name given #{@options_parser}"
             exit
          end
+         puts "Using basedir #{@basedir}"
 
          # plural and singular forms
          load_inflections(inflections)

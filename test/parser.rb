@@ -1,5 +1,5 @@
 require "test/unit"
-require File.dirname(__FILE__)+"/../lib/parser.rb"
+require "./#{File.dirname(__FILE__)}/../lib/parser.rb"
 
 class ParserTest < Test::Unit::TestCase
    def test_error
@@ -146,5 +146,14 @@ class ParserTest < Test::Unit::TestCase
       assert @parser.options.include?("controller")
       assert @parser.options.include?("model")
       assert @parser.options.include?("view")
+   end
+
+   def test_basedir
+      basedir = "/tmp/test"
+      @parser = Rpack::Parser.new(["-d",basedir])
+      assert_equal basedir, @parser.parser.basedir
+
+      @parser = Rpack::Parser.new(["--dir",basedir])
+      assert_equal basedir, @parser.parser.basedir
    end
 end

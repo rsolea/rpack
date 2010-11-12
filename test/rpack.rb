@@ -1,11 +1,11 @@
 require "test/unit"
-require File.dirname(__FILE__)+"/../lib/parser.rb"
-require File.dirname(__FILE__)+"/../lib/rpack.rb"
+require "./#{File.dirname(__FILE__)}/../lib/parser.rb"
+require "./#{File.dirname(__FILE__)}/../lib/rpack.rb"
 
 class RpackTest < Test::Unit::TestCase
    def setup
       @parser  = Rpack::Parser.new([])
-      @rpack   = Rpack::Rpack.new("acao",@parser,Dir.pwd+"/test/inflections.rb")
+      @rpack   = Rpack::Rpack.new("acao",@parser,".",Dir.pwd+"/test/inflections.rb")
    end
 
    def test_pluralize
