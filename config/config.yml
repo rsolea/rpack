@@ -27,7 +27,7 @@ mailer:
 
 migration:
    plural: true
-   check_filename: true
+   update_filename: true
    paths: 
    - /db/migrate/
 
