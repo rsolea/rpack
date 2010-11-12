@@ -1,5 +1,6 @@
 controllers:
-   paths: ./app/controllers/
+   paths: 
+   - ./app/controllers/
 models:
    paths: 
    - ./app/models/
