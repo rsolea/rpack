@@ -4,6 +4,8 @@ require "rubygems"
 require "yaml"
 require "zip/zip"
 require "fileutils"
+require File.dirname(__FILE__)+"/../lib/parser.rb"
 require File.dirname(__FILE__)+"/../lib/rpack.rb"
 
-rpack = Rpack.new
+parser   = Rpack::Parser.new(ARGV)
+rpack    = Rpack::Rpack.new(ARGV[0],parser)

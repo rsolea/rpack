@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
    s.email = %q{eustaquiorangel@gmail.com}
    s.bindir = "bin"
    s.executables = ["rpack"]
-   s.files = ["bin/rpack", "lib/rpack.rb", "config/config.yml"]
+   s.files = ["bin/rpack", "lib/rpack.rb", "lib/parser.rb", "config/config.yml"]
    s.has_rdoc = false
    s.homepage = %q{http://github.com/taq/rpack}
    s.require_paths = ["lib"]
