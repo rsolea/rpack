@@ -61,6 +61,6 @@ fixture:
 
 route:
    plural: true
+   extract: true
    paths:
    - /config/routes.rb
-   extract: true

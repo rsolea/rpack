@@ -75,4 +75,10 @@ class RpackTest < Test::Unit::TestCase
       assert list.size==1
       assert list[0] =~ /users.yml$/, "no fixture found"
    end
+
+   def test_route
+      list = @rpack.get_pack_list(false)["route"]
+      assert list.size==1
+      assert list[0] =~ /routes.rb/, "no routes found"
+   end
 end
