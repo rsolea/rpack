@@ -75,13 +75,14 @@ module Rpack
             key      = config["plural"] ? @plural : @singular
             suffix   = config["suffix"]
             dir      = config["dir"] 
+            inside   = config["inside"]
             extract  = config["extract"]
 
             puts "checking '#{key}' #{option.pluralize} ..." if verbose
             list[option] = []
 
             for path in paths
-               file     = File.expand_path("#{@basedir}#{path}#{extract ? '' : key}#{suffix}")
+               file     = File.expand_path("#{@basedir}#{path}#{inside ? '' : key}#{suffix}")
                flist    = dir ? Dir.glob(File.expand_path("#{file}/**")) : Dir.glob(file)
                for f in flist
                   incfile = true

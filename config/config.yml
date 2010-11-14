@@ -28,7 +28,7 @@ mailer:
 migration:
    plural: true
    update_filename: true
-   extract: true
+   inside: true
    dir: true
    paths: 
    - /db/migrate/
@@ -62,5 +62,6 @@ fixture:
 route:
    plural: true
    extract: true
+   inside: true
    paths:
    - /config/routes.rb
