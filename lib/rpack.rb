@@ -58,6 +58,7 @@ module Rpack
 
       def get_pack_list(verbose=true)
          list = {}
+         extracted = {}
          for option in @parser.options
             config   = @config[option]
             paths    = config["paths"]
@@ -72,20 +73,25 @@ module Rpack
             for path in paths
                file     = File.expand_path("#{@basedir}#{path}#{extract ? '' : key}#{suffix}")
                flist    = dir ? Dir.glob(File.expand_path("#{file}/**")) : Dir.glob(file)
-               incfile  = true
                for f in flist
+                  incfile = true
                   next if !File.exist?(f)
-                  incfile = extract_contents(f,key).size>0 if extract
+                  contents = File.readlines(f)
+                  if extract
+                     contents = extract_contents(contents,key)
+                     incfile  = contents.size>0
+                  end
+                  extracted[f] = contents
                   list[option] << f if incfile
                end
             end
          end
-         list
+         [list,extracted]
       end
 
-      def extract_contents(file,key)
+      def extract_contents(contents,key)
          regexp = Regexp.new(":\\b#{key}\\b")
-         File.readlines(file).select { |line| line =~ regexp }
+         contents.select { |line| line =~ regexp }
       end
    end
 end
