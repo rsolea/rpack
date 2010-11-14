@@ -44,4 +44,10 @@ class RpackTest < Test::Unit::TestCase
       assert list.any? { |e| e =~ /app\/views\/users\/new.html.erb/   }, "no new view"
       assert list.any? { |e| e =~ /app\/views\/users\/show.html.erb/  }, "no show view"
    end
+
+   def test_helper
+      list = @rpack.get_pack_list(false)["helper"]
+      assert list.size==1
+      assert list[0] =~ /users_helper.rb$/, "no helper found"
+   end
 end
