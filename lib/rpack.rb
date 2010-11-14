@@ -9,22 +9,20 @@ module Rpack
    class Rpack
       attr_reader :plural, :singular, :config, :pack_list
 
-      def initialize(pattern,parser,basedir=".")
+      def initialize(patterns,parser,basedir=".")
          # check for pattern and options
-         @pattern = pattern
-         @parser  = parser
-         @basedir = @parser.basedir || basedir
+         @patterns   = patterns
+         @parser     = parser
+         @basedir    = @parser.basedir || basedir
          exit if !@parser.valid?
 
-         if @pattern.nil? || @pattern.size<1
+         if @patterns.nil? || @patterns.size<1
             puts "No name given #{@parser.parser}"
             exit
          end
 
          # plural and singular forms
          load_inflections(@parser.inflections)
-         @singular   = @pattern.singularize
-         @plural     = @singular.pluralize
 
          # load the configs and get the file list
          @config     = YAML.load(File.open(File.expand_path("#{File.dirname(__FILE__)}/../config/config.yml")))
@@ -38,19 +36,24 @@ module Rpack
 
       def pack
          filename = "#{@plural}.zip"
-         puts "Packing #{@plural} to #{filename} ..."
          puts "Using basedir #{@basedir}"
-         list, extracted = get_pack_list
 
-         zip = Zip::ZipOutputStream.open(filename)
+         zip = Zip::ZipOutputStream.open("#{@patterns.sort.join}.zip")
+
+         for pattern in @patterns
+            @singular   = pattern.singularize
+            @plural     = singular.pluralize
+            puts "Packing #{@plural} to #{filename} ..."
+            list, extracted = get_pack_list
          
-         for key,value in list 
-            for file in value.sort
-               puts "processing #{file}"
-               content  = extracted[file]
-               entry    = file.gsub(@basedir,"").gsub(/^\//,"")
-               zip.put_next_entry(entry)
-               zip.write content.join
+            for key,value in list 
+               for file in value.sort
+                  puts "processing #{file}"
+                  content  = extracted[file]
+                  entry    = file.gsub(@basedir,"").gsub(/^\//,"")
+                  zip.put_next_entry(entry)
+                  zip.write content.join
+               end
             end
          end
          zip.close
@@ -58,7 +61,6 @@ module Rpack
 
       def unpack
          puts "Unpacking ..."
-         #
       end
 
       def load_inflections(file=nil)
@@ -66,7 +68,7 @@ module Rpack
          require file if !file.nil? && File.exist?(file)
       end
 
-      def get_pack_list(verbose=true)
+      def get_pack_list
          list = {}
          extracted = {}
          for option in @parser.options
@@ -78,7 +80,6 @@ module Rpack
             inside   = config["inside"]
             extract  = config["extract"]
 
-            puts "checking '#{key}' #{option.pluralize} ..." if verbose
             list[option] = []
 
             for path in paths
