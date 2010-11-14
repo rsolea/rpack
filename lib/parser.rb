@@ -31,7 +31,7 @@ module Rpack
                opts.on("-x","--fixture")     { @options << "fixture"    }
                opts.on("-r","--route")       { @options << "route"      }
 
-               opts.on("-u","--unpack") do 
+               opts.on("-k","--unpack") do 
                   @unpack = true
                end
 

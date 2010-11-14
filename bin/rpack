@@ -9,3 +9,4 @@ require "#{File.expand_path(File.dirname(__FILE__))}/../lib/rpack.rb"
 
 parser   = Rpack::Parser.new(ARGV)
 rpack    = Rpack::Rpack.new(ARGV[0],parser)
+rpack.run

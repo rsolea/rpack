@@ -6,7 +6,7 @@ require "active_support/inflector"
 
 module Rpack
    class Rpack
-      attr_reader :plural, :singular, :config
+      attr_reader :plural, :singular, :config, :pack_list
 
       def initialize(pattern,parser,basedir=".")
          # check for pattern and options
@@ -19,7 +19,6 @@ module Rpack
             puts "No name given #{@parser.parser}"
             exit
          end
-         puts "Using basedir #{@basedir}"
 
          # plural and singular forms
          load_inflections(@parser.inflections)
@@ -28,7 +27,23 @@ module Rpack
 
          # load the configs and get the file list
          @config     = YAML.load(File.open(File.absolute_path("#{File.dirname(__FILE__)}/../config/config.yml")))
-         @list       = filelist
+         @unpack     = @parser.unpack?
+      end
+
+      def run
+         unpack if  @unpack
+         pack   if !@unpack
+      end
+
+      def pack
+         puts "Packing ..."
+         puts "Using basedir #{@basedir}"
+         @pack_list = get_pack_list
+      end
+
+      def unpack
+         puts "Unpacking ..."
+         #
       end
 
       def load_inflections(file=nil)
@@ -36,7 +51,7 @@ module Rpack
          require file if !file.nil? && File.exist?(file)
       end
 
-      def filelist
+      def get_pack_list
          list = {}
          for option in @parser.options
             config   = @config[option]
@@ -48,8 +63,7 @@ module Rpack
             list[option] = []
 
             for path in paths
-               file     = File.absolute_path("#{@basedir}#{path}#{key}#{suffix}")
-
+               file = File.absolute_path("#{@basedir}#{path}#{key}#{suffix}")
                next if !File.exist?(file)
                list[option] << file
             end
