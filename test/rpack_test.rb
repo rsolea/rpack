@@ -63,4 +63,10 @@ class RpackTest < Test::Unit::TestCase
       assert list[0] =~ /user_test.rb$/, "no unit test found"
       assert list[1] =~ /users_helper_test.rb$/, "no unit test helper found"
    end
+
+   def test_functional
+      list = @rpack.get_pack_list(false)["functional"]
+      assert list.size==1
+      assert list[0] =~ /users_controller_test.rb$/, "no functional test found"
+   end
 end
