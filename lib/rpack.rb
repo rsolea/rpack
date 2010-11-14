@@ -54,7 +54,12 @@ module Rpack
       end
 
       def unpack
-         puts "Unpacking ..."
+         file = @patterns.first
+         puts "Unpacking #{file} ..."
+         if !File.exist?(file) || !File.file?(file)
+            puts "File does not exist."
+            return
+         end
       end
 
       def load_inflections(file=nil)
