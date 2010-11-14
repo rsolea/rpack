@@ -4,8 +4,8 @@ require "#{File.expand_path(File.dirname(__FILE__))}/../lib/rpack.rb"
 
 class RpackTest < Test::Unit::TestCase
    def setup
-      @parser  = Rpack::Parser.new([])
-      @rpack   = Rpack::Rpack.new("acao",@parser,".","./#{File.dirname(__FILE__)}/../test/inflections.rb")
+      @parser  = Rpack::Parser.new(["-t","./#{File.dirname(__FILE__)}/../test/inflections.rb"])
+      @rpack   = Rpack::Rpack.new("acao",@parser,".")
    end
 
    def test_pluralize
