@@ -2,20 +2,18 @@ require "optparse"
 
 module Rpack
    class Parser
-      attr_accessor  :parser, :options, :basedir
+      attr_accessor  :parser, :options, :basedir, :inflections
       attr_reader    :full_options
+
       def initialize(argv)
          @options = []
          @parser  = nil
+         @valid   = true
          @full_options = %w(controller model view helper mailer migration 
                             unit functional integration performance fixture route)
          begin
             OptionParser.new do |opts|
                @parser = opts
-               class << @parser
-                  attr_accessor :basedir
-                  attr_accessor :inflections
-               end
 
                opts.banner = "Usage: rpack <name> [options]"
                opts.on("-a","--all")         { @options = @full_options  }
@@ -33,21 +31,23 @@ module Rpack
                opts.on("-r","--route")       { @options << "route"      }
 
                opts.on("-t","--inflections FILE") do |file|
-                  @parser.inflections = file.strip
+                  @inflections = File.expand_path(file.strip)
                end
 
                opts.on("-d","--dir DIR") do |dir|
-                  @parser.basedir = dir.strip
+                  @basedir = dir.strip
                end
             end.parse! argv
             @options = @full_options if @options.size<1
          rescue => e
             puts "Error: #{e}"
             puts @parser
-            @parser, @options = nil, nil
-            return
+            @valid = false
          end
-         [@parser,@options]
+      end
+
+      def valid?
+         @valid
       end
    end
 end

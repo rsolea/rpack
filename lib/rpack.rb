@@ -11,17 +11,18 @@ module Rpack
       def initialize(pattern,parser,basedir=".")
          # check for pattern and options
          @pattern = pattern
-         @options_parser, @options = parser.parser, parser.options
-         @basedir = @options_parser.basedir || basedir
-         exit if @options_parser.nil?
+         @parser  = parser
+         @basedir = @parser.basedir || basedir
+         exit if !@parser.valid?
+
          if @pattern.nil? || @pattern.size<1
-            puts "No name given #{@options_parser}"
+            puts "No name given #{@parser.parser}"
             exit
          end
          puts "Using basedir #{@basedir}"
 
          # plural and singular forms
-         load_inflections(@options_parser.inflections)
+         load_inflections(@parser.inflections)
          @singular   = @pattern.singularize
          @plural     = @singular.pluralize
 
@@ -37,7 +38,7 @@ module Rpack
 
       def filelist
          list = {}
-         for option in @options
+         for option in @parser.options
             config   = @config[option]
             paths    = config["paths"]
             key      = config["plural"] ? @plural : @singular

@@ -3,8 +3,8 @@ require "#{File.expand_path(File.dirname(__FILE__))}/../lib/parser.rb"
 
 class ParserTest < Test::Unit::TestCase
    def test_error
-      @parser = Rpack::Parser.new(%w(-t))
-      assert_nil @parser.options
+      @parser = Rpack::Parser.new(%w(-y))
+      assert !@parser.valid?
    end
 
    def test_empty
@@ -151,9 +151,9 @@ class ParserTest < Test::Unit::TestCase
    def test_basedir
       basedir = "/tmp/test"
       @parser = Rpack::Parser.new(["-d",basedir])
-      assert_equal basedir, @parser.parser.basedir
+      assert_equal basedir, @parser.basedir
 
       @parser = Rpack::Parser.new(["--dir",basedir])
-      assert_equal basedir, @parser.parser.basedir
+      assert_equal basedir, @parser.basedir
    end
 end
