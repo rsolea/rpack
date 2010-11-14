@@ -38,7 +38,12 @@ module Rpack
       def pack
          puts "Packing ..."
          puts "Using basedir #{@basedir}"
-         @pack_list = get_pack_list
+         list = get_pack_list
+         for key,value in list 
+            for file in value.sort
+               puts "processing #{file}"
+            end
+         end
       end
 
       def unpack
@@ -60,14 +65,14 @@ module Rpack
             suffix   = config["suffix"]
             dir      = config["dir"] 
             extract  = config["extract"]
-            incfile  = true
 
             puts "checking '#{key}' #{option.pluralize} ..." if verbose
             list[option] = []
 
             for path in paths
-               file  = File.expand_path("#{@basedir}#{path}#{extract ? '' : key}#{suffix}")
-               flist = dir ? Dir.glob(File.expand_path("#{file}/**")) : Dir.glob(file)
+               file     = File.expand_path("#{@basedir}#{path}#{extract ? '' : key}#{suffix}")
+               flist    = dir ? Dir.glob(File.expand_path("#{file}/**")) : Dir.glob(file)
+               incfile  = true
                for f in flist
                   next if !File.exist?(f)
                   incfile = extract_contents(f,key).size>0 if extract
