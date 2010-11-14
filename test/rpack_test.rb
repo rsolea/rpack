@@ -56,4 +56,11 @@ class RpackTest < Test::Unit::TestCase
       assert list.size==1
       assert list[0] =~ /create_users.rb$/, "no migration found"
    end
+
+   def test_unit
+      list = @rpack.get_pack_list(false)["unit"]
+      assert list.size==2, "only #{list.size} files found on unit test"
+      assert list[0] =~ /user_test.rb$/, "no unit test found"
+      assert list[1] =~ /users_helper_test.rb$/, "no unit test helper found"
+   end
 end

@@ -67,7 +67,7 @@ module Rpack
 
             for path in paths
                file  = File.expand_path("#{@basedir}#{path}#{extract ? '' : key}#{suffix}")
-               flist = dir ? Dir.glob(File.expand_path("#{file}/**")) : [file]
+               flist = dir ? Dir.glob(File.expand_path("#{file}/**")) : Dir.glob(file)
                for f in flist
                   next if !File.exist?(f)
                   incfile = extract_contents(f,key).size>0 if extract
