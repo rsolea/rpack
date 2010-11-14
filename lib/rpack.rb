@@ -26,7 +26,7 @@ module Rpack
          @plural     = @singular.pluralize
 
          # load the configs and get the file list
-         @configs    = YAML.load(File.open(File.dirname(__FILE__)+"/../config/config.yml"))
+         @config     = YAML.load(File.open(File.absolute_path("#{File.dirname(__FILE__)}/../config/config.yml")))
          @list       = filelist
          p @list
       end
@@ -40,14 +40,14 @@ module Rpack
          list = {}
          for option in @options
             puts "checking #{option.pluralize} ..."
-            configs  = @configs[option]
-            paths    = configs["paths"]
+            config   = @config[option]
+            paths    = config["paths"]
 
             list[option] = []
 
             for path in paths
-               key      = configs["plural"] ? @plural : @singular
-               suffix   = configs["suffix"]
+               key      = config["plural"] ? @plural : @singular
+               suffix   = config["suffix"]
                file     = File.absolute_path("#{@basedir}#{path}#{key}#{suffix}")
 
                next if !File.exist?(file)

@@ -1,5 +1,5 @@
 require "test/unit"
-require "./#{File.dirname(__FILE__)}/../lib/parser.rb"
+require "#{File.expand_path(File.dirname(__FILE__))}/../lib/parser.rb"
 
 class ParserTest < Test::Unit::TestCase
    def test_error
