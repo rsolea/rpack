@@ -21,14 +21,13 @@ module Rpack
          puts "Using basedir #{@basedir}"
 
          # plural and singular forms
-         load_inflections(inflections)
+         load_inflections(inflections || @options_parser.inflections)
          @singular   = @pattern.singularize
          @plural     = @singular.pluralize
 
          # load the configs and get the file list
          @config     = YAML.load(File.open(File.absolute_path("#{File.dirname(__FILE__)}/../config/config.yml")))
          @list       = filelist
-         p @list
       end
 
       def load_inflections(file=nil)
@@ -39,15 +38,15 @@ module Rpack
       def filelist
          list = {}
          for option in @options
-            puts "checking #{option.pluralize} ..."
             config   = @config[option]
             paths    = config["paths"]
+            key      = config["plural"] ? @plural : @singular
+            suffix   = config["suffix"]
+            puts "checking '#{key}' #{option.pluralize} ..."
 
             list[option] = []
 
             for path in paths
-               key      = config["plural"] ? @plural : @singular
-               suffix   = config["suffix"]
                file     = File.absolute_path("#{@basedir}#{path}#{key}#{suffix}")
 
                next if !File.exist?(file)

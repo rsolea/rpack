@@ -14,6 +14,7 @@ module Rpack
                @parser = opts
                class << @parser
                   attr_accessor :basedir
+                  attr_accessor :inflections
                end
 
                opts.banner = "Usage: rpack <name> [options]"
@@ -30,6 +31,11 @@ module Rpack
                opts.on("-p","--performance") { @options << "performance"}
                opts.on("-x","--fixture")     { @options << "fixture"    }
                opts.on("-r","--route")       { @options << "route"      }
+
+               opts.on("-t","--inflections FILE") do |file|
+                  @parser.inflections = file.strip
+               end
+
                opts.on("-d","--dir DIR") do |dir|
                   @parser.basedir = dir.strip
                end
