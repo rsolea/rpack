@@ -84,4 +84,10 @@ class RpackTest < Test::Unit::TestCase
       assert list[0] =~ /routes.rb/, "no routes found"
       assert extracted.first =~ /resources :users/
    end
+
+   def test_same_content
+      list, extracted   = @rpack.get_pack_list(false)
+      controller        = list["controller"].first
+      puts controller
+   end
 end
