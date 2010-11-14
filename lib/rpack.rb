@@ -37,22 +37,17 @@ module Rpack
       def pack
          filename = "#{@patterns.sort.join}.zip"
          puts "Using basedir #{@basedir}"
+         puts "Packing to #{filename} ..."
 
          zip = Zip::ZipOutputStream.open(filename)
+         list, extracted = get_pack_list
 
-         for pattern in @patterns
-            @singular   = pattern.singularize
-            @plural     = singular.pluralize
-            puts "Packing #{@plural} to #{filename} ..."
-            list, extracted = get_pack_list
-         
-            for key,value in list 
-               for file in value.sort
-                  content  = extracted[file]
-                  entry    = file.gsub(@basedir,"").gsub(/^\//,"")
-                  zip.put_next_entry(entry)
-                  zip.write content.join
-               end
+         for key,value in list 
+            for file in value.sort
+               content  = extracted[file]
+               entry    = file.gsub(@basedir,"").gsub(/^\//,"")
+               zip.put_next_entry(entry)
+               zip.write content.join
             end
          end
          zip.close
@@ -70,30 +65,40 @@ module Rpack
       def get_pack_list
          list = {}
          extracted = {}
-         for option in @parser.options
-            config   = @config[option]
-            paths    = config["paths"]
-            key      = config["plural"] ? @plural : @singular
-            suffix   = config["suffix"]
-            dir      = config["dir"] 
-            inside   = config["inside"]
-            extract  = config["extract"]
 
-            list[option] = []
+         for pattern in @patterns
+            @singular   = pattern.singularize
+            @plural     = singular.pluralize
+            puts "processing #{@plural} ..."
 
-            for path in paths
-               file     = File.expand_path("#{@basedir}#{path}#{inside ? '' : key}#{suffix}")
-               flist    = dir ? Dir.glob(File.expand_path("#{file}/**")) : Dir.glob(file)
-               for f in flist
-                  incfile = true
-                  next if !File.exist?(f)
-                  contents = File.readlines(f)
-                  if extract
-                     contents = extract_contents(contents,key)
-                     incfile  = contents.size>0
+            for option in @parser.options
+               config   = @config[option]
+               paths    = config["paths"]
+               key      = config["plural"] ? @plural : @singular
+               suffix   = config["suffix"]
+               dir      = config["dir"] 
+               inside   = config["inside"]
+               extract  = config["extract"]
+
+               list[option] ||= []
+
+               for path in paths
+                  file     = File.expand_path("#{@basedir}#{path}#{inside ? '' : key}#{suffix}")
+                  flist    = dir ? Dir.glob(File.expand_path("#{file}/**")) : Dir.glob(file)
+                  for f in flist
+                     incfile = true
+                     next if !File.exist?(f)
+                     contents = File.readlines(f)
+                     if extract
+                        contents = extract_contents(contents,key)
+                        incfile  = contents.size>0
+                        if extracted[f]
+                           contents = extracted[f]+contents
+                        end
+                     end
+                     extracted[f] = contents
+                     list[option] << f if incfile
                   end
-                  extracted[f] = contents
-                  list[option] << f if incfile
                end
             end
          end
