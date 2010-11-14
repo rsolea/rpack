@@ -88,6 +88,8 @@ class RpackTest < Test::Unit::TestCase
    def test_same_content
       list, extracted   = @rpack.get_pack_list(false)
       controller        = list["controller"].first
-      puts controller
+      extracted         = extracted[controller]
+      content           = File.readlines(controller)
+      assert_equal extracted.to_s, content.to_s
    end
 end
