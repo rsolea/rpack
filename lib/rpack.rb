@@ -70,7 +70,7 @@ module Rpack
                flist = dir ? Dir.glob(File.expand_path("#{file}/**")) : [file]
                for f in flist
                   next if !File.exist?(f)
-                  incfile = check_file_contents(f,key) if extract
+                  incfile = extract_contents(f,key).size>0 if extract
                   list[option] << f if incfile
                end
             end
@@ -78,9 +78,9 @@ module Rpack
          list
       end
 
-      def check_file_contents(file,key)
+      def extract_contents(file,key)
          regexp = Regexp.new(key)
-         File.readlines(file).any? { |line| line =~ regexp }
+         File.readlines(file).select { |line| line =~ regexp }
       end
    end
 end
