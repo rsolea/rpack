@@ -79,7 +79,7 @@ module Rpack
       end
 
       def extract_contents(file,key)
-         regexp = Regexp.new(key)
+         regexp = Regexp.new(":\\b#{key}\\b")
          File.readlines(file).select { |line| line =~ regexp }
       end
    end
