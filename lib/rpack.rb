@@ -26,7 +26,7 @@ module Rpack
          @plural     = @singular.pluralize
 
          # load the configs and get the file list
-         @config     = YAML.load(File.open(File.absolute_path("#{File.dirname(__FILE__)}/../config/config.yml")))
+         @config     = YAML.load(File.open(File.expand_path("#{File.dirname(__FILE__)}/../config/config.yml")))
          @unpack     = @parser.unpack?
       end
 
@@ -51,19 +51,20 @@ module Rpack
          require file if !file.nil? && File.exist?(file)
       end
 
-      def get_pack_list
+      def get_pack_list(verbose=true)
          list = {}
          for option in @parser.options
             config   = @config[option]
             paths    = config["paths"]
             key      = config["plural"] ? @plural : @singular
             suffix   = config["suffix"]
-            puts "checking '#{key}' #{option.pluralize} ..."
+
+            puts "checking '#{key}' #{option.pluralize} ..." if verbose
 
             list[option] = []
 
             for path in paths
-               file = File.absolute_path("#{@basedir}#{path}#{key}#{suffix}")
+               file = File.expand_path("#{@basedir}#{path}#{key}#{suffix}")
                next if !File.exist?(file)
                list[option] << file
             end
