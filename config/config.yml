@@ -28,6 +28,8 @@ mailer:
 migration:
    plural: true
    update_filename: true
+   extract: true
+   dir: true
    paths: 
    - /db/migrate/
 

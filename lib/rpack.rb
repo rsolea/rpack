@@ -59,20 +59,28 @@ module Rpack
             key      = config["plural"] ? @plural : @singular
             suffix   = config["suffix"]
             dir      = config["dir"] 
+            extract  = config["extract"]
+            incfile  = true
 
             puts "checking '#{key}' #{option.pluralize} ..." if verbose
             list[option] = []
 
             for path in paths
-               file  = File.expand_path("#{@basedir}#{path}#{key}#{suffix}")
+               file  = File.expand_path("#{@basedir}#{path}#{extract ? '' : key}#{suffix}")
                flist = dir ? Dir.glob(File.expand_path("#{file}/**")) : [file]
                for f in flist
                   next if !File.exist?(f)
-                  list[option] << f
+                  incfile = check_file_contents(f,key) if extract
+                  list[option] << f if incfile
                end
             end
          end
          list
+      end
+
+      def check_file_contents(file,key)
+         regexp = Regexp.new(key)
+         File.readlines(file).any? { |line| line =~ regexp }
       end
    end
 end
