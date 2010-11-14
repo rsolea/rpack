@@ -69,4 +69,10 @@ class RpackTest < Test::Unit::TestCase
       assert list.size==1
       assert list[0] =~ /users_controller_test.rb$/, "no functional test found"
    end
+
+   def test_fixture
+      list = @rpack.get_pack_list(false)["fixture"]
+      assert list.size==1
+      assert list[0] =~ /users.yml$/, "no fixture found"
+   end
 end
