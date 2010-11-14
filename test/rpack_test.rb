@@ -29,4 +29,19 @@ class RpackTest < Test::Unit::TestCase
       assert list.size==1
       assert list[0] =~ /users_controller.rb$/, "no controller found"
    end
+
+   def test_model
+      list = @rpack.get_pack_list(false)["model"]
+      assert list.size==1
+      assert list[0] =~ /user.rb$/, "no model found"
+   end
+
+   def test_view
+      list = @rpack.get_pack_list(false)["view"]
+      assert (4..5).include?(list.size), "view listing size is not ok"
+      assert list.any? { |e| e =~ /app\/views\/users\/edit.html.erb/  }, "no edit view"
+      assert list.any? { |e| e =~ /app\/views\/users\/index.html.erb/ }, "no index view"
+      assert list.any? { |e| e =~ /app\/views\/users\/new.html.erb/   }, "no new view"
+      assert list.any? { |e| e =~ /app\/views\/users\/show.html.erb/  }, "no show view"
+   end
 end

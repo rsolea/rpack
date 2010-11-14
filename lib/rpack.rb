@@ -58,15 +58,18 @@ module Rpack
             paths    = config["paths"]
             key      = config["plural"] ? @plural : @singular
             suffix   = config["suffix"]
+            dir      = config["dir"] 
 
             puts "checking '#{key}' #{option.pluralize} ..." if verbose
-
             list[option] = []
 
             for path in paths
-               file = File.expand_path("#{@basedir}#{path}#{key}#{suffix}")
-               next if !File.exist?(file)
-               list[option] << file
+               file  = File.expand_path("#{@basedir}#{path}#{key}#{suffix}")
+               flist = dir ? Dir.glob(File.expand_path("#{file}/**")) : [file]
+               for f in flist
+                  next if !File.exist?(f)
+                  list[option] << f
+               end
             end
          end
          list
