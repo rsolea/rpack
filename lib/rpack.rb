@@ -1,6 +1,7 @@
 require "rubygems"
 require "yaml"
 require "fileutils"
+require "zip/zip"
 require "active_support"
 require "active_support/inflector"
 
@@ -36,14 +37,23 @@ module Rpack
       end
 
       def pack
-         puts "Packing ..."
+         filename = "#{@plural}.zip"
+         puts "Packing #{@plural} to #{filename} ..."
          puts "Using basedir #{@basedir}"
-         list = get_pack_list
+         list, extracted = get_pack_list
+
+         zip = Zip::ZipOutputStream.open(filename)
+         
          for key,value in list 
             for file in value.sort
                puts "processing #{file}"
+               content  = extracted[file]
+               entry    = file.gsub(@basedir,"").gsub(/^\//,"")
+               zip.put_next_entry(entry)
+               zip.write content.join
             end
          end
+         zip.close
       end
 
       def unpack
