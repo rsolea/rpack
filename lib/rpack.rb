@@ -35,10 +35,10 @@ module Rpack
       end
 
       def pack
-         filename = "#{@plural}.zip"
+         filename = "#{@patterns.sort.join}.zip"
          puts "Using basedir #{@basedir}"
 
-         zip = Zip::ZipOutputStream.open("#{@patterns.sort.join}.zip")
+         zip = Zip::ZipOutputStream.open(filename)
 
          for pattern in @patterns
             @singular   = pattern.singularize
@@ -48,7 +48,6 @@ module Rpack
          
             for key,value in list 
                for file in value.sort
-                  puts "processing #{file}"
                   content  = extracted[file]
                   entry    = file.gsub(@basedir,"").gsub(/^\//,"")
                   zip.put_next_entry(entry)
