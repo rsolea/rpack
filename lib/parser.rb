@@ -9,6 +9,7 @@ module Rpack
          @options = []
          @parser  = nil
          @valid   = true
+         @unpack  = false
          @full_options = %w(controller model view helper mailer migration 
                             unit functional integration performance fixture route)
          begin
@@ -30,6 +31,10 @@ module Rpack
                opts.on("-x","--fixture")     { @options << "fixture"    }
                opts.on("-r","--route")       { @options << "route"      }
 
+               opts.on("-u","--unpack") do 
+                  @unpack = true
+               end
+
                opts.on("-t","--inflections FILE") do |file|
                   @inflections = File.expand_path(file.strip)
                end
@@ -48,6 +53,10 @@ module Rpack
 
       def valid?
          @valid
+      end
+
+      def unpack?
+         @unpack
       end
    end
 end
