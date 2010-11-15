@@ -156,4 +156,13 @@ class ParserTest < Test::Unit::TestCase
       @parser = Rpack::Parser.new(["--dir",basedir])
       assert_equal basedir, @parser.basedir
    end
+
+   def test_package
+      file = "/tmp/foo.zip"
+      @parser = Rpack::Parser.new(["-p",file])
+      assert_equal file, @parser.package
+
+      @parser = Rpack::Parser.new(["--package",file])
+      assert_equal file, @parser.package
+   end
 end
