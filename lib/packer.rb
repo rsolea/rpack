@@ -42,7 +42,7 @@ module Rpack
                list[option] ||= []
 
                for path in paths
-                  file     = File.expand_path("#{@basedir}#{path}#{inside ? '' : key}#{suffix}")
+                  file     = File.expand_path("#{@basedir}/#{path}#{inside ? '' : key}#{suffix}")
                   flist    = dir ? Dir.glob(File.expand_path("#{file}/**")) : Dir.glob(file)
                   for f in flist
                      incfile = true
