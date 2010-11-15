@@ -4,17 +4,19 @@ require "#{File.expand_path(File.dirname(__FILE__))}/../lib/rpack.rb"
 
 class RpackTest < Test::Unit::TestCase
    def setup
-      @parser  = Rpack::Parser.new(["-t","./#{File.dirname(__FILE__)}/../test/inflections.rb"])
-      @rpack   = Rpack::Rpack.new("user",@parser,"/tmp/rpack")
+      @parser  = Rpack::Parser.new(["-t","#{File.expand_path(File.dirname(__FILE__))}/inflections.rb"])
+      @rpack   = Rpack::Rpack.new(%w(user),@parser,"/tmp/rpack")
    end
 
    def test_pluralize
-      @rpack   = Rpack::Rpack.new("acao",@parser,"/tmp/rpack")
+      @rpack   = Rpack::Rpack.new(%w(acao),@parser,"/tmp/rpack")
+      @rpack.get_pack_list(false)
       assert_equal "acoes", @rpack.plural
    end
 
    def test_singularize
-      @rpack   = Rpack::Rpack.new("acao",@parser,"/tmp/rpack")
+      @rpack   = Rpack::Rpack.new(%w(acao),@parser,"/tmp/rpack")
+      @rpack.get_pack_list(false)
       assert_equal "acao", @rpack.singular
    end
 
@@ -25,7 +27,8 @@ class RpackTest < Test::Unit::TestCase
    end
 
    def test_controller
-      list = @rpack.get_pack_list(false)[0]["controller"]
+      list = @rpack.get_pack_list(false)[0]
+      list = list["controller"]
       assert list.size==1
       assert list[0] =~ /users_controller.rb$/, "no controller found"
    end
@@ -53,8 +56,7 @@ class RpackTest < Test::Unit::TestCase
 
    def test_migration
       list = @rpack.get_pack_list(false)[0]["migration"]
-      assert list.size==1
-      assert list[0] =~ /create_users.rb$/, "no migration found"
+      assert list.any? {|e| e =~ /create_users.rb$/}, "no migration found"
    end
 
    def test_unit

@@ -67,14 +67,14 @@ module Rpack
          require file if !file.nil? && File.exist?(file)
       end
 
-      def get_pack_list
+      def get_pack_list(verbose=true)
          list = {}
          extracted = {}
 
          for pattern in @patterns
             @singular   = pattern.singularize
             @plural     = singular.pluralize
-            puts "processing #{@plural} ..."
+            puts "processing #{@plural} ..." if verbose
 
             for option in @parser.options
                config   = @config[option]
