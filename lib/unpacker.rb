@@ -4,15 +4,16 @@ module Rpack
    module Unpacker
       def unpack
          file = File.expand_path(@patterns.first)
-         puts "Unpacking #{file} ..."
+         puts "Unpacking #{file} to #{@basedir} ..."
          if !File.exist?(file) || !File.file?(file)
             puts "File #{file} does not exist."
             return false
          end
          Zip::ZipFile.open(file) do |zip|
-            zip.each do |file|
+            zip.each do |zfile|
+               file     = File.expand_path("#{@basedir}/#{zfile.to_s}")
                dir      = File.dirname(file.to_s)
-               config   = find_config_by_path(file.to_s)
+               config   = find_config_by_path(zfile.to_s)
                verb     = "Extracting"
                next if !config
 
@@ -22,16 +23,16 @@ module Rpack
                end_p       = config["end_pattern"]
                begin_str   = config["begin_string"]
                end_str     = config["end_string"]
-               contents    = file.get_input_stream.readlines
+               contents    = zfile.get_input_stream.readlines
 
                FileUtils.mkpath(dir) if !File.directory?(dir)
 
                if extract
-                  if !File.exist?(file.to_s)
-                     contents = "# you MUST check this\n#{begin_str}\n#{contents}#{end_str}\n"
+                  if !File.exist?(file)
+                     contents = ["# you MUST check this\n","#{begin_str}\n",contents,"#{end_str}\n"]
                   else
                      newcontent     = []
-                     fcontents      = File.readlines(file.to_s)
+                     fcontents      = File.readlines(file)
                      begin_p, end_p = pattern_positions(fcontents,begin_p,end_p)
                      if begin_p && end_p
                         start_range = fcontents[0..begin_p]
@@ -46,12 +47,11 @@ module Rpack
                   end
                end
 
-               newfile  = file.to_s
-               newfile  = newfile.sub(/[0-9]{14}/,Time.now.strftime("%Y%m%d%H%M%s")) if update
-               newfile  = "#{newfile}.rpack" if File.exist?(newfile) && !extract
-               puts "#{verb}:\n#{file} to #{newfile}\n\n"
-               File.open(newfile,"w") do |handle|
-                  handle << contents
+               file  = file.sub(/[0-9]{14}/,Time.now.strftime("%Y%m%d%H%M%s")) if update
+               file  = "#{file}.rpack" if File.exist?(file) && !extract
+               puts "#{verb}:\n#{zfile.to_s} to\n#{file}\n\n"
+               File.open(file,"w") do |handle|
+                  handle << contents.join
                end
             end
          end
