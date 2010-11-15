@@ -62,6 +62,8 @@ fixture:
 route:
    plural: true
    extract: true
+   begin_pattern: "^[\\w:\.]+\.draw do" 
+   end_pattern: "^end"
    inside: true
    paths:
    - /config/routes.rb

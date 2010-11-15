@@ -79,10 +79,10 @@ class RpackTest < Test::Unit::TestCase
    end
 
    def test_route
-      list, extracted = @rpack.get_pack_list(false)
+      list, extracted = @rpack.get_pack_list(true)
       list        = list["route"] 
       extracted   = extracted[list[0]]
-      assert list.size==1
+      assert list.size==1, "route size different for #{list[0]}: #{list.size}"
       assert list[0] =~ /routes.rb/, "no routes found"
       assert extracted.first =~ /resources :users/
    end
@@ -93,5 +93,16 @@ class RpackTest < Test::Unit::TestCase
       extracted         = extracted[controller]
       content           = File.readlines(controller)
       assert_equal extracted.to_s, content.to_s
+   end
+
+   def test_extract
+      contents = File.readlines("/tmp/rpack/config/routes.rb")
+      begin_p  = @rpack.config["begin_pattern"]
+      end_p    = @rpack.config["end_pattern"]
+      assert_equal   @rpack.extract_contents(contents,"bla"), []
+      assert_equal   @rpack.extract_contents(contents,"bla"), []
+      assert_equal   @rpack.extract_contents(contents,"bla","^ble","^bli"), []
+      assert         @rpack.extract_contents(contents,"users").size==1, "should be just one line"
+      assert         @rpack.extract_contents(contents,"users",begin_p,end_p).size==1, "should be just one line"
    end
 end

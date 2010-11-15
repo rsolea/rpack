@@ -84,6 +84,8 @@ module Rpack
                dir      = config["dir"] 
                inside   = config["inside"]
                extract  = config["extract"]
+               begin_p  = config["begin_pattern"]
+               end_p    = config["end_pattern"]
 
                list[option] ||= []
 
@@ -95,9 +97,9 @@ module Rpack
                      next if !File.exist?(f)
                      contents = File.readlines(f)
                      if extract
-                        contents = extract_contents(contents,key)
+                        contents = extract_contents(contents,key,begin_p,end_p)
                         incfile  = contents.size>0
-                        if extracted[f]
+                        if incfile && extracted[f]
                            contents = extracted[f]+contents
                         end
                      end
@@ -110,8 +112,16 @@ module Rpack
          [list,extracted]
       end
 
-      def extract_contents(contents,key)
-         regexp = Regexp.new(":\\b#{key}\\b")
+      def extract_contents(contents,key,begin_pattern=nil,end_pattern=nil)
+         regexp   = Regexp.new(":\\b#{key}\\b")
+         if begin_pattern && end_pattern
+            begin_e  = Regexp.new(begin_pattern)
+            end_e    = Regexp.new(end_pattern)
+            begin_p  = contents.find_index {|e| e =~ begin_e}
+            end_p    = contents.find_index {|e| e =~ end_e}
+            return [] if !begin_p || !end_p
+            contents = contents[begin_p..end_p]
+         end            
          contents.select { |line| line =~ regexp }
       end
    end
