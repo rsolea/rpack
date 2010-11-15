@@ -64,6 +64,8 @@ route:
    extract: true
    begin_pattern: "^[\\w:\.]+\.draw do" 
    end_pattern: "^end"
+   begin_string: "check_your_rails_version.draw do"
+   end_string: "end"
    inside: true
    paths:
    - config/routes.rb

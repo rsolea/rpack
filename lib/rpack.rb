@@ -42,5 +42,14 @@ module Rpack
          file = "./config/initializers/inflections.rb" if file.nil?
          require file if !file.nil? && File.exist?(file)
       end
+
+      def find_config_by_path(path)
+         for key,value in @config
+            paths = value["paths"].map { |e| Regexp.new("^#{e}") }
+            found = paths.any? {|e| e =~ path}
+            return @config[key] if found
+         end          
+         nil
+      end
    end
 end
