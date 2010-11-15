@@ -111,7 +111,7 @@ class ParserTest < Test::Unit::TestCase
    end
 
    def test_performance
-      @parser = Rpack::Parser.new(%w(-p))
+      @parser = Rpack::Parser.new(%w(-o))
       assert_equal 1, @parser.options.size, @parser.options.join(",")
       assert_equal "performance", @parser.options.first
 

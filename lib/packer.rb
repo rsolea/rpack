@@ -1,7 +1,7 @@
 module Rpack   
    module Packer
       def pack
-         filename = "#{@patterns.sort.join}.zip"
+         filename = @parser.package || "#{@patterns.sort.join}.zip"
          puts "Using basedir #{@basedir}"
          puts "Packing to #{filename} ..."
 
