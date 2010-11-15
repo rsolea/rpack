@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require "rubygems"
+require "yaml"
+require "zip/zip"
+require "fileutils"
+require "#{File.expand_path(File.dirname(__FILE__))}/../lib/parser.rb"
+require "#{File.expand_path(File.dirname(__FILE__))}/../lib/rpack.rb"
+
+parser   = Rpack::Parser.new(%w(--unpack))
+rpack    = Rpack::Rpack.new(ARGV,parser)
+rpack.run
