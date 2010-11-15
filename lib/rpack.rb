@@ -6,11 +6,13 @@ require "active_support"
 require "active_support/inflector"
 require "#{File.expand_path(File.dirname(__FILE__))}/packer.rb"
 require "#{File.expand_path(File.dirname(__FILE__))}/unpacker.rb"
+require "#{File.expand_path(File.dirname(__FILE__))}/utils.rb"
 
 module Rpack
    class Rpack
       include Packer
       include Unpacker
+      include Utils
       attr_reader :plural, :singular, :config, :pack_list
 
       def initialize(patterns,parser,basedir=".")
@@ -41,15 +43,6 @@ module Rpack
       def load_inflections(file=nil)
          file = "./config/initializers/inflections.rb" if file.nil?
          require file if !file.nil? && File.exist?(file)
-      end
-
-      def find_config_by_path(path)
-         for key,value in @config
-            paths = value["paths"].map { |e| Regexp.new("^#{e}") }
-            found = paths.any? {|e| e =~ path}
-            return @config[key] if found
-         end          
-         nil
       end
    end
 end

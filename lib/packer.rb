@@ -63,18 +63,5 @@ module Rpack
          end
          [list,extracted]
       end
-
-      def extract_contents(contents,key,begin_pattern=nil,end_pattern=nil)
-         regexp   = Regexp.new(":\\b#{key}\\b")
-         if begin_pattern && end_pattern
-            begin_e  = Regexp.new(begin_pattern)
-            end_e    = Regexp.new(end_pattern)
-            begin_p  = contents.find_index {|e| e =~ begin_e}
-            end_p    = contents.find_index {|e| e =~ end_e}
-            return [] if !begin_p || !end_p
-            contents = contents[begin_p..end_p]
-         end            
-         contents.select { |line| line =~ regexp }
-      end
    end
 end
