@@ -54,11 +54,11 @@ module Rpack
       end
 
       def unpack
-         file = @patterns.first
+         file = File.expand_path(@patterns.first)
          puts "Unpacking #{file} ..."
          if !File.exist?(file) || !File.file?(file)
             puts "File does not exist."
-            return
+            return false
          end
       end
 
