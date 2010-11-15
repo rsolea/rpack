@@ -44,6 +44,7 @@ module Rpack
                for path in paths
                   file     = File.expand_path("#{@basedir}/#{path}#{inside ? '' : key}#{suffix}")
                   flist    = dir ? Dir.glob(File.expand_path("#{file}/**")) : Dir.glob(file)
+                  flist.sort!
                   for f in flist
                      incfile = true
                      next if !File.exist?(f)

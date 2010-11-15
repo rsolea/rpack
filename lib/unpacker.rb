@@ -3,7 +3,8 @@ require "fileutils"
 module Rpack   
    module Unpacker
       def unpack
-         file = File.expand_path(@patterns.first)
+         file  = File.expand_path(@patterns.first)
+         count = 0
          puts "Unpacking #{file} to #{@basedir} ..."
          if !File.exist?(file) || !File.file?(file)
             puts "File #{file} does not exist."
@@ -47,7 +48,11 @@ module Rpack
                   end
                end
 
-               file  = file.sub(/[0-9]{14}/,Time.now.strftime("%Y%m%d%H%M%s")) if update
+               if update
+                  mtime = Time.now.strftime("%Y%m%d%H%M%S").to_i+count
+                  file  = file.sub(/[0-9]{14}/,mtime.to_s)
+                  count += 1
+               end
                file  = "#{file}.rpack" if File.exist?(file) && !extract
                puts "#{verb}:\n#{zfile.to_s} to\n#{file}\n\n"
                File.open(file,"w") do |handle|
