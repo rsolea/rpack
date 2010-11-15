@@ -12,4 +12,8 @@ class RunpackTest < Test::Unit::TestCase
       @rpack   = Rpack::Rpack.new(%w(foobar.zip),@parser,"/tmp/rpack")
       assert !@rpack.run
    end
+
+   def test_unpack
+      assert @rpack.run, "should return true"
+   end
 end
