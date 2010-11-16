@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
    s.name = %q{rpack}
-   s.version = "0.0.1"
+   s.version = "0.0.2"
 
    s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
    s.authors = ["Eustaquio 'TaQ' Rangel"]
-   s.date = %q{2010-11-12}
+   s.date = %q{2010-11-15}
    s.description = %q{Rails packager}
    s.email = %q{eustaquiorangel@gmail.com}
    s.bindir = "bin"
