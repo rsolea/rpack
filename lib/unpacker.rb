@@ -49,7 +49,7 @@ module Rpack
                end
 
                if update
-                  mtime = (Time.now+count).strftime("%Y%m%d%H%M%S")
+                  mtime = (Time.now+count).getutc.strftime("%Y%m%d%H%M%S")
                   file  = file.sub(/[0-9]{14}/,mtime.to_s)
                   count += 1
                end
