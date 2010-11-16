@@ -19,7 +19,7 @@ module Rpack
          # check for pattern and options
          @patterns   = patterns
          @parser     = parser
-         @basedir    = @parser.basedir || basedir
+         @basedir    = File.expand_path(@parser.basedir || basedir)
          exit if !@parser.valid?
 
          if @patterns.nil? || @patterns.size<1
