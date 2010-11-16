@@ -3,6 +3,10 @@ Rpack
 An easy way to pack some Rails functionalities
 ---------------------------------------------------------------------
 
+### Install
+
+gem install rpack
+
 ### Packing
 
 Suppose you have a Rails app with some features you'd love to keep to replicate to other ones, when building them. Let's take a look on a project with these models, and let's suppose they came from a scaffold with all the package it provides, like controllers, migrations and tests:
