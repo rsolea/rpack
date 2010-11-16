@@ -49,6 +49,10 @@ module Rpack
                      incfile = true
                      next if !File.exist?(f)
                      contents = File.readlines(f)
+                     if inside
+                        insidecontent = extract_contents(contents,key)
+                        next if insidecontent.size<1
+                     end
                      if extract
                         contents = extract_contents(contents,key,begin_p,end_p)
                         incfile  = contents.size>0
